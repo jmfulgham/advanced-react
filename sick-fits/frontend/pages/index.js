@@ -1,4 +1,2 @@
-
-export default function HomePage() {
-  return <h3>Hello</h3>;
-}
+// The products page becomes the home page;
+export { default } from './products';
