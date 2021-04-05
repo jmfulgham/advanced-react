@@ -17,6 +17,7 @@ const UPDATE_PRODUCT_MUTATION = gql`
       id: $id
       data: { name: $name, description: $description, price: $price }
     ) {
+      id
       price
       description
       name
@@ -36,27 +37,21 @@ export default function UpdateProduct({ id }) {
   const [
     updateProduct,
     { data: updateData, error: updateError, loading: updateLoading },
-  ] = useMutation(UPDATE_PRODUCT_MUTATION, {
-    variables: {
-      id,
-      data: {
-        // pass in updates here
-      },
-    },
-  });
+  ] = useMutation(UPDATE_PRODUCT_MUTATION);
 
   if (loading || updateLoading) return <p>Loading ...</p>;
-
   return (
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
-        // const res = await createProduct();
-        // clearForm();
-        // // Go to product page
-        // Router.push({
-        //   pathname: `/product/${res.data.createProduct.id}`,
-        // });
+        const res = await updateProduct({
+          variables: {
+            id,
+            name: inputs.name,
+            description: inputs.description,
+            price: inputs.price,
+          },
+        }).catch(console.error);
       }}
     >
       <ErrorMessage error={error || updateError} />
